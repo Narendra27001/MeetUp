@@ -5,11 +5,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/pattern"
-    tools:context=".RegisterActivity">
+    tools:context=".LoginActivity">
 
     <TextView
         android:id="@+id/tvLogo"
-        android:layout_margin="10dp"
+        android:layout_margin="50dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="MeetUP"
@@ -20,20 +20,33 @@
         android:fontFamily="@font/cookie_regular"
         />
 
-
-    <TextView
-        android:id="@+id/tvRegister"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Registration"
-        android:textSize="30sp"
+        android:id="@+id/tvRegister"
+        android:layout_margin="50dp"
+        android:gravity="center"
         android:layout_below="@+id/tvLogo"
-        android:textAlignment="center"
-        android:textColor="@color/dark_gold"
-        android:layout_margin="10dp"
-        android:textStyle="bold"
-        android:fontFamily="@font/cabin_normal"
-        />
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Login  "
+            android:textSize="30sp"
+            android:textAlignment="center"
+            android:textColor="@color/dark_gold"
+            android:textStyle="bold"
+            android:fontFamily="@font/cabin_normal"
+            />
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="55dp"
+            android:src="@drawable/ic_login"
+            />
+    </LinearLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/etUsername"
@@ -42,13 +55,13 @@
         android:layout_margin="10dp"
         android:layout_height="wrap_content"
         android:textColorHint="@color/white"
-        android:hint="Enter Username"
+        android:hint="Email address"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/user"
+            android:id="@+id/lguser"
             android:inputType="text"
             android:textCursorDrawable="@color/white"
             android:textColor="@color/white"
@@ -71,7 +84,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:maxLines="1"
-            android:id="@+id/password"
+            android:id="@+id/lgpassword"
             android:inputType="textPassword"
             android:textCursorDrawable="@color/white"
             android:textColor="@color/white"
@@ -79,66 +92,34 @@
             />
 
     </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/etEmail"
-        android:layout_below="@+id/etPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:textColorHint="@color/white"
-        android:hint="Enter Email Address"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="1"
-            android:id="@+id/email"
-            android:inputType="textEmailAddress"
-            android:textCursorDrawable="@color/white"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/menu"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="match_parent"
-        android:layout_below="@+id/etEmail"
-        android:textColorHint="@color/white"
-        android:layout_height="wrap_content"
-        android:hint="Choose your Interest">
-
-        <AutoCompleteTextView
-            android:layout_width="match_parent"
-            android:id="@+id/actvInterest"
-            android:layout_height="wrap_content"
-            android:background="@color/black"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            android:inputType="none"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/menu"
+        android:layout_below="@+id/etPassword"
         android:layout_alignParentBottom="true"
         android:gravity="center"
-        android:orientation="horizontal">
+        android:orientation="vertical">
 
-    <com.google.android.material.button.MaterialButton
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="Register"
-        android:id="@+id/btRegister"
-        android:onClick="registration"
-        android:textColor="@color/black"
-        android:backgroundTint="@color/dark_gold"
-        />
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Login"
+            android:onClick="login"
+            android:textColor="@color/black"
+            android:backgroundTint="@color/dark_gold"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Not a Member  ?\nRegister Now"
+            android:textColor="#000000"
+            android:textStyle="italic"
+            android:onClick="register"
+            android:backgroundTint="#00ff00"
+            />
     </LinearLayout>
+
 </RelativeLayout>

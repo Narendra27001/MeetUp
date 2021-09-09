@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
     EditText username,password,email;
     FirebaseAuth auth;
     DatabaseReference myRef;
+    Button regis;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class RegisterActivity extends AppCompatActivity {
         username=findViewById(R.id.user);
         password=findViewById(R.id.password);
         email=findViewById(R.id.email);
+        regis=findViewById(R.id.btRegister);
         interest.setAdapter(adapter);
         auth=FirebaseAuth.getInstance();
 
@@ -50,11 +53,12 @@ public class RegisterActivity extends AppCompatActivity {
         String pass=password.getText().toString();
         String mail=email.getText().toString();
         String ins=interest.getText().toString();
-        if(TextUtils.isEmpty(user) || TextUtils.isEmpty(pass) || TextUtils.isEmpty(mail) || TextUtils.isEmpty(ins)) Toast.makeText(this, "All fields must be filled", Toast.LENGTH_LONG).show();
-        else register(user,pass,mail,ins);
+        if(TextUtils.isEmpty(user) || TextUtils.isEmpty(pass) || TextUtils.isEmpty(mail) || TextUtils.isEmpty(ins))
+            Toast.makeText(this, "Please fill all the fields", Toast.LENGTH_LONG).show();
+        else register(user,mail,pass,ins);
     }
     private void register(final String username,String email,String password,String interest){
-        auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this,new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
@@ -76,9 +80,9 @@ public class RegisterActivity extends AppCompatActivity {
                         }
                     });
                 }
-                else Toast.makeText(RegisterActivity.this, "Invalid email or password", Toast.LENGTH_SHORT).show();
-
+                else Toast.makeText(RegisterActivity.this, "Invalid Username or Password", Toast.LENGTH_LONG).show();
             }
         });
+
     }
 }

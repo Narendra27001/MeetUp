@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">MeetUp</string>
+    <string-array name="interests">
+        <item>Football</item>
+        <item>Badminton</item>
+        <item>Cricket</item>
+        <item>Basketball</item>
+        <item>Tennis</item>
+        <item>Chess</item>
+    </string-array>
 </resources>

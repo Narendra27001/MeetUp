@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 public class LoginActivity extends AppCompatActivity {
     EditText username,password;
     FirebaseAuth auth;
+    int flag;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         username=findViewById(R.id.lguser);
         password=findViewById(R.id.lgpassword);
         auth=FirebaseAuth.getInstance();
+        flag=1;
     }
     public void register(View view){
         Intent intent=new Intent(this,RegisterActivity.class);
@@ -37,19 +39,21 @@ public class LoginActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(user) || TextUtils.isEmpty(pass))
             Toast.makeText(this, "Please fill all the fields", Toast.LENGTH_LONG).show();
         else{
-            auth.signInWithEmailAndPassword(user,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if(task.isSuccessful()){
-                        Intent intent=new Intent(LoginActivity.this,MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intent);
-                        finish();
+            if(flag==1) Toast.makeText(this, "Please wait...", Toast.LENGTH_SHORT).show();
+            else {
+                auth.signInWithEmailAndPassword(user, pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        } else
+                            Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_LONG).show();
                     }
-                    else Toast.makeText(LoginActivity.this, "Invalid email or password", Toast.LENGTH_LONG).show();
-                }
-
-            });
+                });
+            }
         }
     }
 }

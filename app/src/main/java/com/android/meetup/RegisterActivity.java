@@ -32,6 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
     FirebaseAuth auth;
     DatabaseReference myRef;
     Button regis;
+    int flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class RegisterActivity extends AppCompatActivity {
         regis=findViewById(R.id.btRegister);
         interest.setAdapter(adapter);
         auth=FirebaseAuth.getInstance();
+        flag=0;
 
     }
     public void registration(View view){
@@ -58,31 +60,36 @@ public class RegisterActivity extends AppCompatActivity {
         else register(user,mail,pass,ins);
     }
     private void register(final String username,String email,String password,String interest){
-        auth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this,new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    FirebaseUser firebaseUser=auth.getCurrentUser();
-                    String userid=firebaseUser.getUid();
-                    myRef= FirebaseDatabase.getInstance().getReference("MyUsers").child(userid);
-                    HashMap<String,String> hashMap=new HashMap<>();
-                    hashMap.put("id",userid);
-                    hashMap.put("username",username);
-                    hashMap.put("interest",interest);
-                    hashMap.put("imageURL","default");
-                    myRef.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@NonNull Task<Void> task) {
-                            Intent intent=new Intent(RegisterActivity.this,MainActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                            finish();
-                        }
-                    });
+        if(flag==1){
+            Toast.makeText(this, "Please wait...", Toast.LENGTH_SHORT).show();
+        }
+        else {
+            flag=1;
+            auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                @Override
+                public void onComplete(@NonNull Task<AuthResult> task) {
+                    if (task.isSuccessful()) {
+                        FirebaseUser firebaseUser = auth.getCurrentUser();
+                        String userid = firebaseUser.getUid();
+                        myRef = FirebaseDatabase.getInstance().getReference("MyUsers").child(userid);
+                        HashMap<String, String> hashMap = new HashMap<>();
+                        hashMap.put("id", userid);
+                        hashMap.put("username", username);
+                        hashMap.put("interest", interest);
+                        hashMap.put("imageURL", "default");
+                        myRef.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                finish();
+                            }
+                        });
+                    } else
+                        Toast.makeText(RegisterActivity.this, "Invalid Username or Password", Toast.LENGTH_LONG).show();
                 }
-                else Toast.makeText(RegisterActivity.this, "Invalid Username or Password", Toast.LENGTH_LONG).show();
-            }
-        });
-
+            });
+        }
     }
 }

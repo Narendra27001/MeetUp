@@ -31,7 +31,6 @@ public class RegisterActivity extends AppCompatActivity {
     EditText username,password,email;
     FirebaseAuth auth;
     DatabaseReference myRef;
-    Button regis;
     int flag;
 
     @Override
@@ -44,7 +43,6 @@ public class RegisterActivity extends AppCompatActivity {
         username=findViewById(R.id.user);
         password=findViewById(R.id.password);
         email=findViewById(R.id.email);
-        regis=findViewById(R.id.btRegister);
         interest.setAdapter(adapter);
         auth=FirebaseAuth.getInstance();
         flag=0;

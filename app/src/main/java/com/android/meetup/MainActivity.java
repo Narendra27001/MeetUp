@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     DatabaseReference myRef;
     Toolbar toolbar;
+    TabLayout tabLayout;
+    ViewPager viewPager;
     ViewPagerAdapter viewPagerAdapter;
 
 
@@ -43,10 +45,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         toolbar = findViewById(R.id.toolbar);
+        tabLayout=findViewById(R.id.tab_layout);
+        viewPager=findViewById(R.id.view_pager);
+
         viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(new ChatsFragment(),"Chats");
         viewPagerAdapter.addFragment(new UsersrFragment(),"Users");
 
+        viewPager.setAdapter(viewPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("MeetUP");
@@ -84,40 +91,4 @@ public class MainActivity extends AppCompatActivity {
         }
         return false;
     }
-
-    class ViewPagerAdapter extends FragmentPagerAdapter{
-        private ArrayList<Fragment> fragments;
-        private ArrayList<String> titles;
-
-        ViewPagerAdapter(FragmentManager fm){
-            super(fm);
-            this.fragments=new ArrayList<>();
-            this.titles=new ArrayList<>();
-
-        }
-
-        @NonNull
-        @Override
-        public Fragment getItem(int position) {
-            return fragments.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return fragments.size();
-
-        }
-        public void addFragment(Fragment fragment,String title){
-            fragments.add(fragment);
-            titles.add(title);
-        }
-
-        @Nullable
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return titles.get(position);
-        }
-    }
-
-
 }

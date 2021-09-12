@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/pattern"
     tools:context=".MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -18,9 +19,27 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/black"
+            app:titleTextColor="@color/dark_gold"
             android:minHeight="?attr/actionBarSize"
             android:theme="@style/ThemeOverlay.AppCompat.Dark"/>
+
+        <com.google.android.material.tabs.TabLayout
+            android:layout_width="match_parent"
+            android:id="@+id/tab_layout"
+            android:background="@color/black"
+            app:tabTextColor="@color/dark_gold"
+            android:minHeight="?attr/actionBarSize"
+            app:tabRippleColor="@color/dark_gold"
+            app:tabIndicatorColor="@color/dark_gold"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark"
+            android:layout_height="wrap_content"/>
+
     </com.google.android.material.appbar.AppBarLayout>
 
+
+        <androidx.viewpager.widget.ViewPager
+            android:layout_width="match_parent"
+            android:id="@+id/view_pager"
+            android:layout_height="match_parent"/>
 
 </LinearLayout>

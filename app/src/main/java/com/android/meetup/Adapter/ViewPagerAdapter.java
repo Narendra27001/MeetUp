@@ -1,4 +1,4 @@
-package com.android.meetup;
+package com.android.meetup.Adapter;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,7 +12,7 @@ public class ViewPagerAdapter extends FragmentPagerAdapter {
     private final ArrayList<Fragment> fragments;
     private final ArrayList<String> titles;
 
-    ViewPagerAdapter(FragmentManager fm){
+    public ViewPagerAdapter(FragmentManager fm){
         super(fm);
         this.fragments=new ArrayList<>();
         this.titles=new ArrayList<>();

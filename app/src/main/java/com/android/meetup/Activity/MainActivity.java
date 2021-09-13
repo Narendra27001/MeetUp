@@ -1,4 +1,4 @@
-package com.android.meetup;
+package com.android.meetup.Activity;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,9 +17,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 
+import com.android.meetup.Adapter.ViewPagerAdapter;
 import com.android.meetup.Fragment.ChatsFragment;
-import com.android.meetup.Fragment.UsersrFragment;
+import com.android.meetup.Fragment.UsersFragment;
+import com.android.meetup.Fragment.UsersFragment;
 import com.android.meetup.Model.Users;
+import com.android.meetup.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -50,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
         viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(new ChatsFragment(),"Chats");
-        viewPagerAdapter.addFragment(new UsersrFragment(),"Users");
+        viewPagerAdapter.addFragment(new UsersFragment(),"Users");
 
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
@@ -58,20 +61,6 @@ public class MainActivity extends AppCompatActivity {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setTitle("MeetUP");
         }
-
-        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        myRef = FirebaseDatabase.getInstance().getReference("Users").child(firebaseUser.getUid());
-        myRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Users users = snapshot.getValue(Users.class);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
     }
 
     @Override

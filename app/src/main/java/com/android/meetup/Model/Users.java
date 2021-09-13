@@ -6,6 +6,15 @@ public class Users {
     private String interest;
     private String imageURL;
 
+    public Users() {
+    }
+
+    public Users(Users user){
+        this.id=user.getId();
+        this.username=user.getUsername();
+        this.interest=user.getInterest();
+        this.imageURL=user.getImageURL();
+    }
     public Users(String id, String username, String interest, String imageURL) {
         this.id = id;
         this.username = username;

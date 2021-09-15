@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import com.android.meetup.Adapter.UsersAdapter;
 import com.android.meetup.Model.Users;
 import com.android.meetup.R;
+import com.android.meetup.Utility.Parameters;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -86,9 +87,9 @@ public class UsersFragment extends Fragment {
     }
     private void readUsers(){
         final FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference myRef= FirebaseDatabase.getInstance().getReference("MyUsers");
+        DatabaseReference myRef= FirebaseDatabase.getInstance().getReference(Parameters.MyUsers.toString());
         String uid=firebaseUser.getUid();
-        DatabaseReference userRef=FirebaseDatabase.getInstance().getReference("MyUsers/"+uid);
+        DatabaseReference userRef=FirebaseDatabase.getInstance().getReference(Parameters.MyUsers.toString()+"/"+uid);
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -103,10 +104,6 @@ public class UsersFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 mUsers.clear();
-//                for(DataSnapshot s: snapshot.getChildren()){
-//                    Users users=s.getValue(Users.class);
-//                    if(users.getId().equals(uid)) cUser=new Users(users);
-//                }
                 for(DataSnapshot s: snapshot.getChildren()) {
                     Users u = s.getValue(Users.class);
                     if (!u.getId().equals(uid) && u.getInterest().equals(cUser.getInterest()))

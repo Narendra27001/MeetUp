@@ -13,6 +13,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.meetup.R;
+import com.android.meetup.Utility.Parameters;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -66,7 +67,7 @@ public class RegisterActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         FirebaseUser firebaseUser = auth.getCurrentUser();
                         String userid = firebaseUser.getUid();
-                        myRef = FirebaseDatabase.getInstance().getReference("MyUsers").child(userid);
+                        myRef = FirebaseDatabase.getInstance().getReference(Parameters.MyUsers.toString()).child(userid);
                         HashMap<String, String> hashMap = new HashMap<>();
                         hashMap.put("id", userid);
                         hashMap.put("username", username);

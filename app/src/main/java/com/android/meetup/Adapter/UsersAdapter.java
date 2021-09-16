@@ -42,6 +42,7 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
             intent.putExtra(Parameters.UserId.toString(),users.getId());
             context.startActivity(intent);
         }));
+        
     }
 
     @Override

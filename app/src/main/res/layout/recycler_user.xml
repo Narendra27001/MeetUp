@@ -3,7 +3,6 @@
     android:orientation="horizontal"
     android:weightSum="12"
     android:id="@+id/llUser"
-    android:layout_marginBottom="1dp"
     android:paddingBottom="15dp"
     android:layout_width="match_parent"
     android:background="@color/black"

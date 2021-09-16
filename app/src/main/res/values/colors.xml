@@ -9,4 +9,8 @@
     <color name="dark_gold">#EEBC1D</color>
     <color name="white">#FFFFFFFF</color>
     <color name="black_gray">#30FFFFFF</color>
+    <color name="green">#3CBA54</color>
+    <color name="yellow">#F4C20D</color>
+    <color name="red">#DB3236</color>
+    <color name="blue">#4885ED</color>
 </resources>

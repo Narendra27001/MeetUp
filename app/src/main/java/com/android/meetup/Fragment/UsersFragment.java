@@ -3,7 +3,9 @@ package com.android.meetup.Fragment;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -90,6 +92,8 @@ public class UsersFragment extends Fragment {
         DatabaseReference myRef= FirebaseDatabase.getInstance().getReference(Parameters.MyUsers.toString());
         String uid=firebaseUser.getUid();
         DatabaseReference userRef=FirebaseDatabase.getInstance().getReference(Parameters.MyUsers.toString()+"/"+uid);
+        DividerItemDecoration divider = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);
+        divider.setDrawable(ContextCompat.getDrawable(getContext(),R.drawable.divider));
         userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -113,6 +117,7 @@ public class UsersFragment extends Fragment {
                 UsersAdapter usersAdapter=new UsersAdapter(getContext(),mUsers);
                 recyclerView.setLayoutManager(linearLayoutManager);
                 recyclerView.setAdapter(usersAdapter);
+                recyclerView.addItemDecoration(divider);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

@@ -69,10 +69,10 @@ public class RegisterActivity extends AppCompatActivity {
                         String userid = firebaseUser.getUid();
                         myRef = FirebaseDatabase.getInstance().getReference(Parameters.MyUsers.toString()).child(userid);
                         HashMap<String, String> hashMap = new HashMap<>();
-                        hashMap.put("id", userid);
-                        hashMap.put("username", username);
-                        hashMap.put("interest", interest);
-                        hashMap.put("imageURL", "default");
+                        hashMap.put(Parameters.id.toString(), userid);
+                        hashMap.put(Parameters.username.toString(), username);
+                        hashMap.put(Parameters.interest.toString(), interest);
+                        hashMap.put(Parameters.imageURL.toString(), "default");
                         myRef.setValue(hashMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {

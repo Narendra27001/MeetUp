@@ -9,8 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MeetUp">
-        <activity android:name=".Activity.MessageActivity"
-            android:windowSoftInputMode="stateHidden|adjustResize"/>
+        <activity android:name=".Activity.MessageActivity"/>
         <activity android:name=".Activity.MainActivity" />
         <activity android:name=".Activity.RegisterActivity"/>
         <activity android:name=".Activity.LoginActivity">

@@ -3,6 +3,7 @@ package com.android.meetup.Activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -14,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.meetup.Adapter.ChatsAdapter;
+import com.android.meetup.Model.Chats;
 import com.android.meetup.Model.Users;
 import com.android.meetup.R;
 import com.android.meetup.Utility.Parameters;
@@ -26,7 +29,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class MessageActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -39,6 +44,8 @@ public class MessageActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     DatabaseReference myRef;
     String userid;
+    int bottom=0;
+    ArrayList<Chats> mChats;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,8 +69,12 @@ public class MessageActivity extends AppCompatActivity {
                 }
             });
         }
+        LinearLayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
+        recyclerView.setLayoutManager(layoutManager);
+
         intent=getIntent();
         userid=intent.getStringExtra(Parameters.UserId.toString());
+
         firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
         myRef= FirebaseDatabase.getInstance().getReference(Parameters.MyUsers.toString()).child(userid);
         myRef.addValueEventListener(new ValueEventListener() {
@@ -74,7 +85,7 @@ public class MessageActivity extends AppCompatActivity {
                 username.setText(user.getUsername());
                 if(!user.getImageURL().equals("default"))
                     Picasso.get().load(user.getImageURL()).error(R.drawable.ic_default).into(dp);
-
+                readMessage(firebaseUser.getUid(),userid,user.getImageURL());
             }
 
             @Override
@@ -93,7 +104,55 @@ public class MessageActivity extends AppCompatActivity {
                     hashMap.put(Parameters.receiver.toString(),userid);
                     hashMap.put(Parameters.message.toString(),message);
                     myRef.child(Parameters.Chats.toString()).push().setValue(hashMap);
+                    final DatabaseReference chatRef = FirebaseDatabase.getInstance()
+                            .getReference(Parameters.ChatList.toString()).child(firebaseUser.getUid()).child(userid);
+
+                    chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            if(!snapshot.exists())
+                                chatRef.child(Parameters.id.toString()).setValue(userid);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
+
                 }
+            }
+        });
+    }
+    private void readMessage(String myid,String userid,String imageURL){
+        mChats=new ArrayList<>();
+        myRef=FirebaseDatabase.getInstance().getReference(Parameters.Chats.toString());
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                mChats.clear();
+                for(DataSnapshot snap: snapshot.getChildren()){
+                    Chats chats=snap.getValue(Chats.class);
+                    if(chats.getReceiver().equals(userid) && chats.getSender().equals(myid)
+                            || chats.getReceiver().equals(myid) && chats.getSender().equals(userid)){
+                        mChats.add(chats);
+                    }
+                }
+                bottom=mChats.size()-1;
+                ChatsAdapter chatsAdapter=new ChatsAdapter(MessageActivity.this,mChats,imageURL);
+                recyclerView.setAdapter(chatsAdapter);
+                if(bottom>0) {
+                    recyclerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            recyclerView.smoothScrollToPosition(bottom);
+                        }
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
             }
         });
     }

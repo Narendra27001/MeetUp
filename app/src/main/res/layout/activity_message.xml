@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:fitsSystemWindows="true"
     android:background="@drawable/pattern"
     tools:context=".Activity.MessageActivity">
 
@@ -49,6 +50,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="50dp"
+            android:id="@+id/messageRecycler"
+            />
+
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -77,12 +85,5 @@
             android:layout_alignParentBottom="true"
             android:src="@drawable/ic_send" />
     </RelativeLayout>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/messageRecycler"
-        />
-
 
 </LinearLayout>

@@ -84,12 +84,14 @@ public class UsersFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_users, container, false);
         recyclerView=view.findViewById(R.id.userRecycler);
+        recyclerView.setHasFixedSize(true);
         readUsers();
         return view;
     }
     private void readUsers(){
         final FirebaseUser firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference myRef= FirebaseDatabase.getInstance().getReference(Parameters.MyUsers.toString());
+        assert firebaseUser != null;
         String uid=firebaseUser.getUid();
         DatabaseReference userRef=FirebaseDatabase.getInstance().getReference(Parameters.MyUsers.toString()+"/"+uid);
         DividerItemDecoration divider = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);

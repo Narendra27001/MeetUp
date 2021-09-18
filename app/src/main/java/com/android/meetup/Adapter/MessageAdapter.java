@@ -1,28 +1,24 @@
 package com.android.meetup.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.meetup.Activity.MessageActivity;
 import com.android.meetup.Model.Chats;
 import com.android.meetup.R;
-import com.android.meetup.Utility.Parameters;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> {
+public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
     private final Context context;
     private final ArrayList<Chats> mChats;
     private String imageURL;
@@ -66,7 +62,7 @@ public class ChatsAdapter extends RecyclerView.Adapter<ChatsAdapter.ViewHolder> 
         }
 
     }
-    public ChatsAdapter(Context context, ArrayList<Chats> mChats,String imageURL){
+    public MessageAdapter(Context context, ArrayList<Chats> mChats, String imageURL){
         this.context=context;
         this.mChats=mChats;
         this.imageURL=imageURL;

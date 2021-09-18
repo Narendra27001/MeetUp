@@ -13,9 +13,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.meetup.Adapter.ChatsAdapter;
+import com.android.meetup.Adapter.MessageAdapter;
 import com.android.meetup.Model.Chats;
 import com.android.meetup.Model.Users;
 import com.android.meetup.R;
@@ -31,7 +30,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
 
 public class MessageActivity extends AppCompatActivity {
     Toolbar toolbar;
@@ -44,7 +43,7 @@ public class MessageActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     DatabaseReference myRef;
     String userid;
-    int bottom=0;
+    String interest;
     ArrayList<Chats> mChats;
 
     @Override
@@ -69,12 +68,14 @@ public class MessageActivity extends AppCompatActivity {
                 }
             });
         }
+        recyclerView.setHasFixedSize(true);
         LinearLayoutManager layoutManager=new LinearLayoutManager(getApplicationContext());
+        layoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(layoutManager);
 
         intent=getIntent();
         userid=intent.getStringExtra(Parameters.UserId.toString());
-
+        interest=intent.getStringExtra(Parameters.interest.toString());
         firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
         myRef= FirebaseDatabase.getInstance().getReference(Parameters.MyUsers.toString()).child(userid);
         myRef.addValueEventListener(new ValueEventListener() {
@@ -104,16 +105,20 @@ public class MessageActivity extends AppCompatActivity {
                     hashMap.put(Parameters.receiver.toString(),userid);
                     hashMap.put(Parameters.message.toString(),message);
                     myRef.child(Parameters.Chats.toString()).push().setValue(hashMap);
+                    typedMessage.setText("");
+                    readMessage(firebaseUser.getUid(),userid,"default");
                     final DatabaseReference chatRef = FirebaseDatabase.getInstance()
-                            .getReference(Parameters.ChatList.toString()).child(firebaseUser.getUid()).child(userid);
-
+                            .getReference(Parameters.ChatList.toString());
                     chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if(!snapshot.exists())
-                                chatRef.child(Parameters.id.toString()).setValue(userid);
+                            if (!snapshot.exists()) {
+                                HashMap<String,String> myMap=new HashMap<>();
+                                myMap.put(Parameters.id.toString(),userid);
+                                myMap.put(Parameters.interest.toString(),interest);
+                                chatRef.child(firebaseUser.getUid()).push().setValue(myMap);
+                            }
                         }
-
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
 
@@ -138,17 +143,8 @@ public class MessageActivity extends AppCompatActivity {
                         mChats.add(chats);
                     }
                 }
-                bottom=mChats.size()-1;
-                ChatsAdapter chatsAdapter=new ChatsAdapter(MessageActivity.this,mChats,imageURL);
-                recyclerView.setAdapter(chatsAdapter);
-                if(bottom>0) {
-                    recyclerView.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            recyclerView.smoothScrollToPosition(bottom);
-                        }
-                    });
-                }
+                MessageAdapter messageAdapter =new MessageAdapter(MessageActivity.this,mChats,imageURL);
+                recyclerView.setAdapter(messageAdapter);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {

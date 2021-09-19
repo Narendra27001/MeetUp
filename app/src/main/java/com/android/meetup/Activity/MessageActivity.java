@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.meetup.Adapter.MessageAdapter;
+import com.android.meetup.Model.ChatList;
 import com.android.meetup.Model.Chats;
 import com.android.meetup.Model.Users;
 import com.android.meetup.R;
@@ -43,6 +44,7 @@ public class MessageActivity extends AppCompatActivity {
     FirebaseUser firebaseUser;
     DatabaseReference myRef;
     String userid;
+    int flag=0;
     String interest;
     ArrayList<Chats> mChats;
 
@@ -108,15 +110,19 @@ public class MessageActivity extends AppCompatActivity {
                     typedMessage.setText("");
                     readMessage(firebaseUser.getUid(),userid,"default");
                     final DatabaseReference chatRef = FirebaseDatabase.getInstance()
-                            .getReference(Parameters.ChatList.toString());
-                    chatRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            .getReference(Parameters.ChatList.toString()).child(firebaseUser.getUid());
+                    chatRef.addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            if (!snapshot.exists()) {
+                            for(DataSnapshot snap:snapshot.getChildren()){
+                                ChatList chat=snap.getValue(ChatList.class);
+                                if(chat.getId().equals(userid)) flag=1;
+                            }
+                            if(flag==0){
                                 HashMap<String,String> myMap=new HashMap<>();
                                 myMap.put(Parameters.id.toString(),userid);
                                 myMap.put(Parameters.interest.toString(),interest);
-                                chatRef.child(firebaseUser.getUid()).push().setValue(myMap);
+                                chatRef.push().setValue(myMap);
                             }
                         }
                         @Override
@@ -124,7 +130,6 @@ public class MessageActivity extends AppCompatActivity {
 
                         }
                     });
-
                 }
             }
         });

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Fragment.ProfileFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:padding="30dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/lldp"
+            android:orientation="vertical"
+            android:gravity="center">
+
+        <ImageView
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/ic_default"
+            android:id="@+id/dp"/>
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/username"
+            android:layout_marginTop="30dp"
+            android:layout_below="@+id/lldp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextColor="@color/black"
+            app:boxBackgroundColor="@color/dark_gold"
+            android:hint="Username">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:textColor="@color/black"
+                android:inputType="text"
+                android:id="@+id/pfUser"
+                android:textColorHint="@color/black"
+                android:layout_height="wrap_content"
+                />
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/menu"
+            android:layout_below="@+id/username"
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextColor="@color/black"
+            android:layout_marginTop="30dp"
+            app:boxBackgroundColor="@color/dark_gold"
+            android:hint="Choose your Interest">
+
+            <AutoCompleteTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:id="@+id/interest"
+                android:textColorHint="@color/black"
+                android:inputType="none"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_below="@+id/menu"
+            android:orientation="vertical"
+            android:layout_marginTop="30dp"
+            android:layout_height="wrap_content">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/blue"
+            android:text="Update"/>
+        </LinearLayout>
+    </RelativeLayout>
+</FrameLayout>

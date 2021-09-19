@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 
 import com.android.meetup.Adapter.ViewPagerAdapter;
 import com.android.meetup.Fragment.ChatsFragment;
+import com.android.meetup.Fragment.ProfileFragment;
 import com.android.meetup.Fragment.UsersFragment;
 import com.android.meetup.Fragment.UsersFragment;
 import com.android.meetup.Model.Users;
@@ -35,8 +36,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    FirebaseUser firebaseUser;
-    DatabaseReference myRef;
     Toolbar toolbar;
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -54,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(new ChatsFragment(),"Chats");
         viewPagerAdapter.addFragment(new UsersFragment(),"Users");
+        viewPagerAdapter.addFragment(new ProfileFragment(),"Profile");
 
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);

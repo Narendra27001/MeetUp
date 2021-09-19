@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.meetup.Activity.MessageActivity;
 import com.android.meetup.Model.Users;
 import com.android.meetup.R;
+import com.android.meetup.Utility.CircleTransform;
 import com.android.meetup.Utility.Parameters;
 import com.squareup.picasso.Picasso;
 
@@ -23,6 +24,7 @@ import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
     private final Context context;
+    int w=100,h=100;
     private final ArrayList<Users> mUsers;
     @NonNull
     @Override
@@ -36,7 +38,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         Users users=mUsers.get(position);
         holder.name.setText(users.getUsername());
         if(!users.getImageURL().equals("default"))
-            Picasso.get().load(users.getImageURL()).error(R.drawable.ic_default).into(holder.image);
+            Picasso.get().load(users.getImageURL()).resize(w,h).transform(new CircleTransform())
+                    .error(R.drawable.ic_default).into(holder.image);;
         holder.llUser.setOnClickListener((view -> {
             Intent intent=new Intent(context, MessageActivity.class);
             intent.putExtra(Parameters.UserId.toString(),users.getId());

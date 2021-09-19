@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.meetup.Model.Chats;
 import com.android.meetup.R;
+import com.android.meetup.Utility.CircleTransform;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.squareup.picasso.Picasso;
@@ -22,6 +23,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     private final Context context;
     private final ArrayList<Chats> mChats;
     private String imageURL;
+    int w=100,h=100;
 
     FirebaseUser fUser;
     public static final int MSG_TYPE_LEFT=0;
@@ -43,7 +45,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         Chats Chats=mChats.get(position);
         holder.show_message.setText(Chats.getMessage());
         if(!imageURL.equals("default"))
-            Picasso.get().load(imageURL).error(R.drawable.ic_default).into(holder.profile_image);
+            Picasso.get().load(imageURL).resize(w,h).transform(new CircleTransform())
+                    .error(R.drawable.ic_default).into(holder.profile_image);;
     }
 
     @Override

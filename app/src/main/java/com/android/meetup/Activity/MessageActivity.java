@@ -42,6 +42,7 @@ public class MessageActivity extends AppCompatActivity {
     ImageButton send;
     EditText typedMessage;
     Intent intent;
+    String sender="default",receiver="default";
     FirebaseUser firebaseUser;
     DatabaseReference myRef;
     String userid;
@@ -59,7 +60,6 @@ public class MessageActivity extends AppCompatActivity {
         recyclerView=findViewById(R.id.messageRecycler);
         send=findViewById(R.id.ivSend);
         typedMessage=findViewById(R.id.etMessage);
-
         setSupportActionBar(toolbar);
         if(getSupportActionBar()!=null) {
             getSupportActionBar().setTitle(" ");
@@ -80,6 +80,18 @@ public class MessageActivity extends AppCompatActivity {
         userid=intent.getStringExtra(Parameters.UserId.toString());
         interest=intent.getStringExtra(Parameters.interest.toString());
         firebaseUser= FirebaseAuth.getInstance().getCurrentUser();
+        myRef=FirebaseDatabase.getInstance().getReference(Parameters.MyUsers.toString()).child(firebaseUser.getUid());
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Users u=snapshot.getValue(Users.class);
+                sender=u.getImageURL();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
         myRef= FirebaseDatabase.getInstance().getReference(Parameters.MyUsers.toString()).child(userid);
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -87,10 +99,11 @@ public class MessageActivity extends AppCompatActivity {
                 Users user=snapshot.getValue(Users.class);
                 assert user != null;
                 username.setText(user.getUsername());
+                receiver=user.getImageURL();
                 if(!user.getImageURL().equals("default"))
                     Picasso.get().load(user.getImageURL()).resize(100,100)
                             .transform(new CircleTransform()).error(R.drawable.ic_default).into(dp);
-                readMessage(firebaseUser.getUid(),userid,user.getImageURL());
+                readMessage(firebaseUser.getUid(),userid,sender,receiver);
             }
 
             @Override
@@ -110,7 +123,7 @@ public class MessageActivity extends AppCompatActivity {
                     hashMap.put(Parameters.message.toString(),message);
                     myRef.child(Parameters.Chats.toString()).push().setValue(hashMap);
                     typedMessage.setText("");
-                    readMessage(firebaseUser.getUid(),userid,"default");
+                    readMessage(firebaseUser.getUid(),userid,sender,receiver);
                     final DatabaseReference chatRef = FirebaseDatabase.getInstance()
                             .getReference(Parameters.ChatList.toString()).child(firebaseUser.getUid());
                     chatRef.addValueEventListener(new ValueEventListener() {
@@ -135,8 +148,26 @@ public class MessageActivity extends AppCompatActivity {
                 }
             }
         });
+
+        recyclerView.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v,
+                                       int left, int top, int right, int bottom,
+                                       int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (bottom < oldBottom) {
+                    recyclerView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            int c=recyclerView.getAdapter().getItemCount();
+                            if(c>0)
+                            recyclerView.smoothScrollToPosition(c- 1);
+                        }
+                    }, 100);
+                }
+            }
+        });
     }
-    private void readMessage(String myid,String userid,String imageURL){
+    private void readMessage(String myid,String userid,String sender,String receiver){
         mChats=new ArrayList<>();
         myRef=FirebaseDatabase.getInstance().getReference(Parameters.Chats.toString());
         myRef.addValueEventListener(new ValueEventListener() {
@@ -150,7 +181,7 @@ public class MessageActivity extends AppCompatActivity {
                         mChats.add(chats);
                     }
                 }
-                MessageAdapter messageAdapter =new MessageAdapter(MessageActivity.this,mChats,imageURL);
+                MessageAdapter messageAdapter =new MessageAdapter(MessageActivity.this,mChats,sender,receiver);
                 recyclerView.setAdapter(messageAdapter);
             }
             @Override

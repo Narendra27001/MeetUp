@@ -33,6 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintTextColor="@color/black"
+            android:textColorHint="@color/black"
             app:boxBackgroundColor="@color/dark_gold"
             android:hint="Username">
 
@@ -52,6 +53,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:hintTextColor="@color/black"
+            android:textColorHint="@color/black"
             android:layout_marginTop="30dp"
             app:boxBackgroundColor="@color/dark_gold"
             android:hint="Choose your Interest">

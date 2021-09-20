@@ -22,7 +22,9 @@ import java.util.ArrayList;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
     private final Context context;
     private final ArrayList<Chats> mChats;
-    private String imageURL=null;
+    private String sender=null;
+    private String receiver=null;
+
     FirebaseUser fUser;
     public static final int MSG_TYPE_LEFT=0;
     public static final int MSG_TYPE_RIGHT=1;
@@ -40,12 +42,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Chats Chats=mChats.get(position);
+        Chats Chats = mChats.get(position);
         holder.show_message.setText(Chats.getMessage());
-        if(!imageURL.equals("default"))
-            Picasso.get().load(imageURL).resize(50,50)
-                    .transform(new CircleTransform()).error(R.drawable.ic_default).into(holder.profile_image);    }
-
+        if (getItemViewType(position) == MSG_TYPE_LEFT) {
+            if (!receiver.equals("default"))
+                Picasso.get().load(receiver).resize(50, 50)
+                        .transform(new CircleTransform()).error(R.drawable.ic_default).into(holder.profile_image);
+        } else {
+            if (!sender.equals("default"))
+                Picasso.get().load(sender).resize(50, 50)
+                        .transform(new CircleTransform()).error(R.drawable.ic_default).into(holder.profile_image);
+        }
+    }
     @Override
     public int getItemCount() {
         return mChats.size();
@@ -62,10 +70,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         }
 
     }
-    public MessageAdapter(Context context, ArrayList<Chats> mChats, String imageURL){
+    public MessageAdapter(Context context, ArrayList<Chats> mChats, String sender,String receiver){
         this.context=context;
         this.mChats=mChats;
-        this.imageURL=imageURL;
+        this.sender=sender;
+        this.receiver=receiver;
     }
 
     @Override

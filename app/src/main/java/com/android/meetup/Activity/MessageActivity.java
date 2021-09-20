@@ -19,6 +19,7 @@ import com.android.meetup.Model.ChatList;
 import com.android.meetup.Model.Chats;
 import com.android.meetup.Model.Users;
 import com.android.meetup.R;
+import com.android.meetup.Utility.CircleTransform;
 import com.android.meetup.Utility.Parameters;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -87,7 +88,8 @@ public class MessageActivity extends AppCompatActivity {
                 assert user != null;
                 username.setText(user.getUsername());
                 if(!user.getImageURL().equals("default"))
-                    Picasso.get().load(user.getImageURL()).error(R.drawable.ic_default).into(dp);
+                    Picasso.get().load(user.getImageURL()).resize(100,100)
+                            .transform(new CircleTransform()).error(R.drawable.ic_default).into(dp);
                 readMessage(firebaseUser.getUid(),userid,user.getImageURL());
             }
 

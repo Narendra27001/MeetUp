@@ -22,9 +22,7 @@ import java.util.ArrayList;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
     private final Context context;
     private final ArrayList<Chats> mChats;
-    private String imageURL;
-    int w=100,h=100;
-
+    private String imageURL=null;
     FirebaseUser fUser;
     public static final int MSG_TYPE_LEFT=0;
     public static final int MSG_TYPE_RIGHT=1;
@@ -45,9 +43,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         Chats Chats=mChats.get(position);
         holder.show_message.setText(Chats.getMessage());
         if(!imageURL.equals("default"))
-            Picasso.get().load(imageURL).resize(w,h).transform(new CircleTransform())
-                    .error(R.drawable.ic_default).into(holder.profile_image);;
-    }
+            Picasso.get().load(imageURL).resize(50,50)
+                    .transform(new CircleTransform()).error(R.drawable.ic_default).into(holder.profile_image);    }
 
     @Override
     public int getItemCount() {

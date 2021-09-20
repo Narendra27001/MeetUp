@@ -24,7 +24,6 @@ import java.util.List;
 
 public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> {
     private final Context context;
-    int w=100,h=100;
     private final ArrayList<Users> mUsers;
     @NonNull
     @Override
@@ -38,8 +37,8 @@ public class UsersAdapter extends RecyclerView.Adapter<UsersAdapter.ViewHolder> 
         Users users=mUsers.get(position);
         holder.name.setText(users.getUsername());
         if(!users.getImageURL().equals("default"))
-            Picasso.get().load(users.getImageURL()).resize(w,h).transform(new CircleTransform())
-                    .error(R.drawable.ic_default).into(holder.image);;
+            Picasso.get().load(users.getImageURL()).resize(50,50)
+                    .transform(new CircleTransform()).error(R.drawable.ic_default).into(holder.image);
         holder.llUser.setOnClickListener((view -> {
             Intent intent=new Intent(context, MessageActivity.class);
             intent.putExtra(Parameters.UserId.toString(),users.getId());
